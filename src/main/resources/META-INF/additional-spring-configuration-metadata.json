@@ -1,0 +1,25 @@
+{
+  "properties": [
+    {
+      "name": "system.development.swagger.enabled",
+      "description": "Is swagger feature available in our development phase.",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    }
+  ],
+  "hints": [
+    {
+      "name": "system.development.swagger.enabled",
+      "values": [
+        {
+          "value": "true",
+          "description": "Enable swagger feature in our development phase."
+        },
+        {
+          "value": "false",
+          "description": "Disable swagger feature in our development phase."
+        }
+      ]
+    }
+  ]
+}
