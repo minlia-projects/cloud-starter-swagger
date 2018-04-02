@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.data.domain.Pageable;
 import springfox.documentation.schema.ModelReference;
 import springfox.documentation.schema.ResolvedTypes;
 import springfox.documentation.schema.TypeNameExtractor;
@@ -18,46 +17,48 @@ import springfox.documentation.spi.service.ParameterBuilderPlugin;
 import springfox.documentation.spi.service.contexts.ParameterContext;
 
 public class AppidParameterBuilderPlugin implements ParameterBuilderPlugin {
-    private final TypeNameExtractor nameExtractor;
-    private final TypeResolver resolver;
 
-    @Autowired
-    public AppidParameterBuilderPlugin(TypeNameExtractor nameExtractor, TypeResolver resolver) {
-        this.nameExtractor = nameExtractor;
-        this.resolver = resolver;
-    }
+  private final TypeNameExtractor nameExtractor;
+  private final TypeResolver resolver;
 
-    @Override
-    public boolean supports(DocumentationType delimiter) {
-        return true;
-    }
+  @Autowired
+  public AppidParameterBuilderPlugin(TypeNameExtractor nameExtractor, TypeResolver resolver) {
+    this.nameExtractor = nameExtractor;
+    this.resolver = resolver;
+  }
 
-    private Function<ResolvedType, ? extends ModelReference>
-    createModelRefFactory(ParameterContext context) {
-        ModelContext modelContext = ModelContext.inputParam(context.methodParameter().getParameterType(),
-                context.getDocumentationType(),
-                context.getAlternateTypeProvider(),
-                context.getGenericNamingStrategy(),
-                context.getIgnorableParameterTypes());
-        return ResolvedTypes.modelRefFactory(modelContext, nameExtractor);
-    }
+  @Override
+  public boolean supports(DocumentationType delimiter) {
+    return true;
+  }
 
-    @Override
-    public void apply(ParameterContext context) {
-        MethodParameter parameter = context.methodParameter();
-        Class<?> type = parameter.getParameterType();
+  private Function<ResolvedType, ? extends ModelReference>
+  createModelRefFactory(ParameterContext context) {
+    ModelContext modelContext = ModelContext
+        .inputParam(context.methodParameter().getParameterType(),
+            context.getDocumentationType(),
+            context.getAlternateTypeProvider(),
+            context.getGenericNamingStrategy(),
+            context.getIgnorableParameterTypes());
+    return ResolvedTypes.modelRefFactory(modelContext, nameExtractor);
+  }
+
+  @Override
+  public void apply(ParameterContext context) {
+    MethodParameter parameter = context.methodParameter();
+    Class<?> type = parameter.getParameterType();
 //        if (type != null && Pageable.class.isAssignableFrom(type)) {
-            Function<ResolvedType, ? extends ModelReference> factory =
-                    createModelRefFactory(context);
+    Function<ResolvedType, ? extends ModelReference> factory =
+        createModelRefFactory(context);
 
-            ModelReference intModel = factory.apply(resolver.resolve(Integer.TYPE));
-            ModelReference stringModel = factory.apply(resolver.resolve(List.class, String.class));
+    ModelReference intModel = factory.apply(resolver.resolve(Integer.TYPE));
+    ModelReference stringModel = factory.apply(resolver.resolve(List.class, String.class));
 
-            List<Parameter> parameters = Lists.newArrayList(
-                    context.parameterBuilder()
-                            .parameterType("X-REQUEST-APPID").name("X-REQUEST-APPID").modelRef(intModel)
-                            .description("应用ID")
-                            .build()
+    List<Parameter> parameters = Lists.newArrayList(
+        context.parameterBuilder()
+            .parameterType("X-REQUEST-APPID").name("X-REQUEST-APPID").modelRef(intModel)
+            .description("应用ID")
+            .build()
 //                ,
 //                    context.parameterBuilder()
 //                            .parameterType("query").name("size").modelRef(intModel)
@@ -73,10 +74,10 @@ public class AppidParameterBuilderPlugin implements ParameterBuilderPlugin {
 //                            .description("search json [{\"fieldName\":\"name\",\"attrType\":\"String\",\"fieldNode\":\"\",\"operate\":\"like\",\"weight\":0,\"value\":\"g\"},{\"fieldName\":\"status\",\"attrType\":\"Integer\",\"fieldNode\":\"\",\"operate\":\"in\",\"weight\":0,\"value\":\"-1\"}]}")
 //                            .build()
 //
-            );
+    );
 
-            context.getOperationContext().operationBuilder().parameters(parameters);
+    context.getOperationContext().operationBuilder().parameters(parameters);
 //        }
-    }
+  }
 
 }

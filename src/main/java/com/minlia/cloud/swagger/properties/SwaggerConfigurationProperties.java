@@ -1,4 +1,4 @@
- package com.minlia.cloud.swagger.properties;
+package com.minlia.cloud.swagger.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +15,9 @@ public class SwaggerConfigurationProperties {
 
   String version = "APPLICATION.VERSION";
 
-  String path="/api/.*";
-  String description="Minlia Cloud Api Documentations";
-  String contact="cloud@minlia.com";
+  String path = "/api/.*";
+  String description = "Minlia Cloud Api Documentations";
+  String contact = "cloud@minlia.com";
 
   boolean redirect = false;
 

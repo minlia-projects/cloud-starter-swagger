@@ -1,8 +1,8 @@
 package com.minlia.cloud.swagger.starter.configuration;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.minlia.cloud.swagger.properties.SwaggerConfigurationProperties;
 import com.minlia.cloud.swagger.plugins.PageableParameterBuilderPlugin;
+import com.minlia.cloud.swagger.properties.SwaggerConfigurationProperties;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +38,11 @@ public class Swagger2Config {
     StopWatch watch = new StopWatch();
     watch.start();
 
-    Docket docket= new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex(minliaProperties.getPath())).build().directModelSubstitute(LocalDate.class, java.sql.Date.class)
-      .directModelSubstitute(LocalDateTime.class, java.util.Date.class).pathMapping("/").apiInfo(metadata())
-      ;
+    Docket docket = new Docket(DocumentationType.SWAGGER_2).select()
+        .apis(RequestHandlerSelectors.any()).paths(PathSelectors.regex(minliaProperties.getPath()))
+        .build().directModelSubstitute(LocalDate.class, java.sql.Date.class)
+        .directModelSubstitute(LocalDateTime.class, java.util.Date.class).pathMapping("/")
+        .apiInfo(metadata());
 
     watch.stop();
     log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
@@ -49,15 +51,16 @@ public class Swagger2Config {
 
   @Bean
   SecurityConfiguration security() {
-    return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER, "X-Auth-Token", ",");
+    return new SecurityConfiguration(null, null, null, null, null, ApiKeyVehicle.HEADER,
+        "X-Auth-Token", ",");
   }
 
   @Bean
 //  @ConditionalOnClass(value = {Pageable.class})
-  PageableParameterBuilderPlugin pageableParameterBuilderPlugin(TypeNameExtractor nameExtractor, TypeResolver resolver) {
+  PageableParameterBuilderPlugin pageableParameterBuilderPlugin(TypeNameExtractor nameExtractor,
+      TypeResolver resolver) {
     return new PageableParameterBuilderPlugin(nameExtractor, resolver);
   }
-
 
 
   @Bean
@@ -68,7 +71,9 @@ public class Swagger2Config {
   private ApiInfo metadata() {
 //        return new ApiInfoBuilder().title("Minlia Cloud Development Environment System API").description("Minlia Cloud Development Environment System API").version("2.0").contact("cloud@minlia.com").build();
 //        return new ApiInfoBuilder().title(minliaProperties.getSwagger().getTitle()).description(minliaProperties.getSwagger().getDescription()).version(minliaProperties.getSwagger().getVersion()).contact(minliaProperties.getSwagger().getContact()).build();
-    return new ApiInfoBuilder().title(minliaProperties.getTitle()).description(minliaProperties.getDescription()).version(minliaProperties.getVersion()).contact(minliaProperties.getContact()).build();
+    return new ApiInfoBuilder().title(minliaProperties.getTitle())
+        .description(minliaProperties.getDescription()).version(minliaProperties.getVersion())
+        .contact(minliaProperties.getContact()).build();
   }
 
 
