@@ -1,5 +1,6 @@
 package com.minlia.cloud.swagger.properties;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,12 @@ public class SwaggerConfigurationProperties {
   String path = "/api/.*";
   String description = "Minlia Cloud Api Documentations";
   String contact = "cloud@minlia.com";
+
+//  List<ApiSpecification> specs;
+
+  String keyName="X-Auth-Token";
+  String passAs="header";
+
 
   boolean redirect = false;
 
