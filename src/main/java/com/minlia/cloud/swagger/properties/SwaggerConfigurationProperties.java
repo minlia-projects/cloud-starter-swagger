@@ -20,11 +20,8 @@ public class SwaggerConfigurationProperties {
   String description = "Minlia Cloud Api Documentations";
   String contact = "cloud@minlia.com";
 
-//  List<ApiSpecification> specs;
-
   String keyName="X-Auth-Token";
   String passAs="header";
-
 
   boolean redirect = false;
 
